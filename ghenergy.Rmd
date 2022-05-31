@@ -1,0 +1,60 @@
+---
+title: "Ghana's Energy Trends 2000 - 2019"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(billboarder)
+
+
+library(readr)
+Import_of_Petroleum_Products_kilotonnes_ <- read_csv("C:/Users/Lewis/Desktop/Ghana's energy data/Import of Petroleum Products (kilotonnes).csv")
+View(Import_of_Petroleum_Products_kilotonnes_)
+
+en <- Import_of_Petroleum_Products_kilotonnes_
+en1 <- en %>% select(Year, Total)
+knitr::opts_chunk$set(fig.width = 5, fig.asp = 1/3)
+
+```
+
+
+-----------------------------------------------------------------------
+
+
+
+```{r, echo=FALSE}
+billboarder() %>% bb_linechart(data = en1, x = "Year", y = "Total", type = "spline") %>% bb_x_axis(tick = list(format = "%Y-%m", fit = FALSE)) %>%  bb_x_grid(show = TRUE) %>% 
+  bb_y_grid(show = TRUE) %>% bb_legend(position = "right") %>% 
+  bb_zoom(enabled = list (type = "drag"), resetButton = list(text = "unzoom")) %>% 
+  bb_labs(title = "Ghana's Total Import of Petroleum Products 2000 - 2019 (In Kilotonnes)", 
+          caption = "Data source: https://data.gov.gh")
+
+```
+
+
+-----------------------------------------------------------------------
+
+
+
+```{r, echo=FALSE}
+en2 <- en %>% select(Year, LPG, Gasoline, Kerosene)
+
+billboarder() %>% bb_linechart(data = en2[, c( "Year", "LPG","Gasoline", "Kerosene")], type = "spline") %>% bb_x_grid(show = TRUE) %>% 
+  bb_y_grid(show = TRUE) %>% bb_legend(position = "right") %>% bb_zoom(enabled = list (type = "drag"), resetButton = list(text = "unzoom")) %>% bb_labs(title = "A Time Series Showing Ghana's LPG, Gasoline, and Kerosene Importation 2000 - 2019 (In Kilotonnes)", caption = "Data source: https://data.gov.gh")
+
+```
+
+
+
+```{r, echo=FALSE}
+en3 <- en %>% select(Year, Gasoil, `Fuel Oil`, DPK, ATK)
+
+billboarder() %>% bb_linechart(data = en3[, c( "Year", "Gasoil","Fuel Oil", "DPK", "ATK")], type = "spline") %>% bb_x_grid(show = TRUE) %>% 
+  bb_y_grid(show = TRUE) %>% bb_legend(position = "right") %>% bb_zoom(enabled = list (type = "drag"), resetButton = list(text = "unzoom")) %>% bb_labs(title = "A Time Series Showing Ghana's Gasoil, Fuel Oil, Dual Purpose Kerosene, and Aviation Turbine Kerosene Importation 2000 - 2019", caption = "Data source: https://data.gov.gh")
+
+```
+
